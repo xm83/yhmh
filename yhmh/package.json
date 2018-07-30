@@ -2,13 +2,26 @@
   "name": "yhmh",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:1337",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "connect-mongo": "^2.0.1",
+    "cookie-parser": "^1.4.3",
+    "crypto": "^1.0.1",
+    "express-session": "^1.15.6",
+    "mongoose-findorcreate": "^3.0.0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "passport-local": "^1.0.0",
+    "path": "^0.12.7",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-scripts": "1.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "nodemon server.js",
+    "react": "react-scripts start",
+    "dev": "react-scripts start | npm run start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

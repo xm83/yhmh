@@ -1,0 +1,6 @@
+#! /bin/bash
+
+git add .
+git commit -m "third commit"
+git push heroku xm83:master
+heroku logs --tail

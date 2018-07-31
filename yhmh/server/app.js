@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
@@ -21,6 +22,11 @@ var routes = require('./index');
 
 // require node modules
 var app = express();
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'hbs');
+
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -84,14 +90,18 @@ passport.use(new FacebookStrategy({
   }
 ));
 
-// Tell Passport how to set req.user
-passport.serializeUser(function(user, done) {
-    done(null, user._id);
-});
-
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
+passport.serializeUser((user, done) => {
+    console.log('serialize user:', user);
+    done(null, user._id); // does this need the '_', could it just be .id?
+  });
+passport.deserializeUser((userId, done) => {
+    console.log('deserialize id:', userId);
+    User.findById(userId, (err, user) => {
+        if (err) {
+        done(err);
+        } else {
+        done(null, user);
+        }
     });
 });
 

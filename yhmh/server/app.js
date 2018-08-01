@@ -52,9 +52,13 @@ function hashPassword(password) {
 
 
 // Tell passport how to read our user models
-passport.use(new LocalStrategy(function(email, password, done) {
+passport.use(new LocalStrategy({
+  usernameField: 'email',
+  passwordField: 'password'
+}, function(email, password, done) {
   // hash password
   const hash = hashPassword(password);
+  console.log("email:", email);
   // first try local strategy
   User.findOne({ email }, (err, user) => {
     if (err) {
@@ -92,7 +96,7 @@ passport.use(new FacebookStrategy({
 
 passport.serializeUser((user, done) => {
     console.log('serialize user:', user);
-    done(null, user._id); // does this need the '_', could it just be .id?
+    done(null, user._id); 
   });
 passport.deserializeUser((userId, done) => {
     console.log('deserialize id:', userId);

@@ -29,7 +29,7 @@ module.exports = function(passport) {
                 });
                 newUser.save()
                     .then(res.status(200).json({message: 'Registered!' }))
-                    .catch(err => res.json({ status: `Error: ${err}` }));
+                    .catch(err => res.status(500).json({ message: `Error: ${err}` }));
             } else {
                 // user already exists
                 res.status(500).json({message: 'User already exists'})
@@ -39,9 +39,14 @@ module.exports = function(passport) {
         
     });
 
-    router.post('/login', passport.authenticate('local'), (req, res) => {
-        console.log(req);
-        res.send("success")
+    router.post('/login', (req, res) => {
+        passport.authenticate('local', {
+            successRedirect: '/',
+            failureRedirect: '/'
+            
+        })(req, res)
+        // console.log(req);
+        // res.send("success")
     })
 
     // router.post('/login', passport.authenticate('local'), (req, res) => {
@@ -87,6 +92,7 @@ module.exports = function(passport) {
         /*  req.logout();
             res.redirect('/login');*/
         req.session.destroy();
+        res.status(200).json({message: 'success logging out'})
     })
 
 
